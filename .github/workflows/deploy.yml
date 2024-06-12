@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Ping the servers
-        run: ping google.com
+        run: echo 'Running in Staging'
 
   alpha:
     if: github.event.inputs.releaseType == 'alpha'
@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Ping the servers
-        run: ping google.com
+        run: echo 'Running in Alpha'
 
   beta:
     if: github.event.inputs.releaseType == 'beta'
@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Ping the servers
-        run: ping google.com
+        run: echo 'Running in Beta'
 
   prod:
     if: github.event.inputs.releaseType == 'prod'
@@ -43,5 +43,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Ping the servers
-        run: ping google.com
+        run: echo 'Running in Production'
   
