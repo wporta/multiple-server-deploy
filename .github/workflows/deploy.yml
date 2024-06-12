@@ -18,8 +18,8 @@ jobs:
     name: Deploy to Staging
     runs-on: ubuntu-latest
     steps:
-      - name: Ping the servers
-        run: echo 'Running in Staging'
+      - name: Ping the Cloudflare servers
+        run: ping -c 10 1.1.1.1
 
   alpha:
     if: github.event.inputs.releaseType == 'alpha'
