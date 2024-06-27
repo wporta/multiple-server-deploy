@@ -1,0 +1,47 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Deploy to Multiple Servers
+
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      releaseType:
+        description: 'Where to release (staging, alpha, beta, production)??'
+        required: true
+        default: 'staging'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping the Cloudflare servers
+        run: echo 'Running in Staging'
+
+  alpha:
+    if: github.event.inputs.releaseType == 'alpha'
+    name: Deploy to Alpha
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping the servers
+        run: echo 'Running in Alpha'
+
+  beta:
+    if: github.event.inputs.releaseType == 'beta'
+    name: Deploy to Beta
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping the servers
+        run: echo 'Running in Beta'
+
+  prod:
+    if: github.event.inputs.releaseType == 'prod'
+    name: Deploy to Prod
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping the servers
+        run: echo 'Running in Production'
+  

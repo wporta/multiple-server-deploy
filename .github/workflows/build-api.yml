@@ -1,0 +1,17 @@
+name: Build API Project
+
+on:
+  workflow_call: 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checking out the code
+        run: |
+          echo "Checking the code..."
+
+      - name: Build and push to dockerhub
+        run: |
+          echo "Building and Pushing to Dockerhub"
+
