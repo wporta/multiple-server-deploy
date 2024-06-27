@@ -1,4 +1,4 @@
-name: Deploy API and Web
+name: Deploy API and Web Projects
 
 on:
   workflow_call: 

@@ -1,6 +1,6 @@
 # This is a build workflow. It should be the entry point.
 
-name: Build Project
+name: Build and Deploy API and WEB Projects
 
 on:
   workflow_dispatch:
@@ -32,7 +32,7 @@ jobs:
 
   deployToAlpha:
     if: github.event.inputs.releaseType == 'alpha'
-    name: Deploy to ${{ github.event.inputs.releaseType }} Minions
+    name: ${{ matrix.minion }}
     strategy:
       matrix:
         minion: [alpha-1, alpha-2, alpha-3, alpha-4, alpha-5] # We should get a list of all minions
