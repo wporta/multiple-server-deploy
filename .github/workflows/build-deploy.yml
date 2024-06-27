@@ -8,7 +8,14 @@ on:
       releaseType:
         description: 'Where to release (staging, alpha, beta, production)??'
         required: true
-        default: 'staging'
+        #default: 'staging'
+        type: choice
+        options:
+          - staging
+          - alpha
+          - beta
+          - production
+
 
 jobs:
   buildApi:
@@ -22,7 +29,7 @@ jobs:
   # Executing different jobs depending on the releaseType
   deployToStaging:
     if: github.event.inputs.releaseType == 'staging'
-    name: Deploy to ${{ github.event.inputs.releaseType }} Minions
+    name: ${{ matrix.minion }}
     strategy:
       matrix:
         minion: [staging-1, staging-2, staging-3, staging-4, staging-5] # We should get a list of all minions
@@ -42,7 +49,7 @@ jobs:
 
   deployToBeta:
     if: github.event.inputs.releaseType == 'beta'
-    name: Deploy to ${{ github.event.inputs.releaseType }} Minions
+    name: ${{ matrix.minion }}
     strategy:
       matrix:
         minion: [beta-1, beta-2, beta-3, beta-4, beta-5] # We should get a list of all minions
@@ -51,8 +58,8 @@ jobs:
       minion: ${{ matrix.minion }}
 
   deployToProd:
-    if: github.event.inputs.releaseType == 'prod'
-    name: Deploy to ${{ github.event.inputs.releaseType }} Minions
+    if: github.event.inputs.releaseType == 'production'
+    name: ${{ matrix.minion }}
     strategy:
       matrix:
         minion: [prod-1, prod-2, prod-3, prod-4, prod-5, prod-6, prod-7, prod-8, prod-9, prod-10] # We should get a list of all minions
