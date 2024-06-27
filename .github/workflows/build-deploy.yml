@@ -4,6 +4,11 @@ name: Build Project
 
 on:
   workflow_dispatch:
+    inputs:
+      releaseType:
+        description: 'Where to release (staging, alpha, beta, production)??'
+        required: true
+        default: 'staging'
 
 jobs:
   buildApi:
@@ -13,12 +18,44 @@ jobs:
   buildWeb:
     name: Build WEB
     uses: ./.github/workflows/build-web.yml
-  
-  deployToMinions:
-    name: Echo to Minions
+
+  # Executing different jobs depending on the releaseType
+  deployToStaging:
+    if: github.event.inputs.releaseType == 'staging'
+    name: Deploy to ${{ github.event.inputs.releaseType }} Minions
     strategy:
       matrix:
-        minion: [minion-1, minion-2, minion-3, minion-4, minion-5, minion-6, minion-7, minion-8, minion-9, minion-10] # We should get a list of all minions
+        minion: [staging-1, staging-2, staging-3, staging-4, staging-5] # We should get a list of all minions
+    uses: ./.github/workflows/deploy.yml
+    with:
+      minion: ${{ matrix.minion }}
+
+  deployToAlpha:
+    if: github.event.inputs.releaseType == 'alpha'
+    name: Deploy to ${{ github.event.inputs.releaseType }} Minions
+    strategy:
+      matrix:
+        minion: [alpha-1, alpha-2, alpha-3, alpha-4, alpha-5] # We should get a list of all minions
+    uses: ./.github/workflows/deploy.yml
+    with:
+      minion: ${{ matrix.minion }}
+
+  deployToBeta:
+    if: github.event.inputs.releaseType == 'beta'
+    name: Deploy to ${{ github.event.inputs.releaseType }} Minions
+    strategy:
+      matrix:
+        minion: [beta-1, beta-2, beta-3, beta-4, beta-5] # We should get a list of all minions
+    uses: ./.github/workflows/deploy.yml
+    with:
+      minion: ${{ matrix.minion }}
+
+  deployToProd:
+    if: github.event.inputs.releaseType == 'prod'
+    name: Deploy to ${{ github.event.inputs.releaseType }} Minions
+    strategy:
+      matrix:
+        minion: [prod-1, prod-2, prod-3, prod-4, prod-5, prod-6, prod-7, prod-8, prod-9, prod-10] # We should get a list of all minions
     uses: ./.github/workflows/deploy.yml
     with:
       minion: ${{ matrix.minion }}
