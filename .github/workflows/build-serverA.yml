@@ -5,5 +5,4 @@ on:
 
 jobs:
   buildServerA:
-    uses: wporta/serverA/.github/workflows/serverA.yml
-    
+    uses: https://github.com/wporta/serverA/.github/workflows/serverA.yml
