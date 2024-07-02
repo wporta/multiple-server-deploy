@@ -1,0 +1,9 @@
+name: Build Server A
+
+on:
+  workflow_dispatch: 
+
+jobs:
+  buildServerA:
+    uses: wporta/serverA/.github/workflows/serverA.yml
+    
