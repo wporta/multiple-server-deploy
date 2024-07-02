@@ -1,4 +1,4 @@
-name: Build Server A
+name: Build Servers A and B
 
 on:
   workflow_dispatch: 
@@ -9,3 +9,11 @@ jobs:
 
   buildServerB:
     uses: wporta/serverB/.github/workflows/serverB.yml@main
+
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [buildServerA, buildServerB]
+    steps:
+      - name: Deploy
+        run: echo "Deploy Apps"
