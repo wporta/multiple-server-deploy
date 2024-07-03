@@ -2,13 +2,45 @@ name: Build Servers A and B
 
 on:
   workflow_dispatch: 
+  push:
+    tags:
+      - '(v\d+\.\d+\.\d+|\d{8}-\d{4})'
 
 jobs:
-  buildServerA:
-    uses: wporta/serverA/.github/workflows/serverA.yml@main
+  # buildServerA:
+  #   uses: wporta/serverA/.github/workflows/serverA.yml@main
+  #   with:
+  #     tag: ${{ github.ref_name }}
 
-  buildServerB:
-    uses: wporta/serverB/.github/workflows/serverB.yml@main
+  # buildServerB:
+  #   uses: wporta/serverB/.github/workflows/serverB.yml@main
+  #   with:
+  #     tag: ${{ github.ref_name }}
+
+  sync-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the serverA code
+        uses: actions/checkout@v3
+
+      - name: Extract the tag name
+        id: extract_tag
+        run: echo "tag=${{ github.ref_name }}" >> $GITHUB_ENV
+
+      - name: Push tag to serverA
+        run: |
+          TAG_NAME=${{ env.tag }}
+
+          # Clone serverA
+          REPO_NAME=serverA
+          git clone https://github.com/wporta/${REPO_A_NAME}.git
+          cd ${REPO_A_NAME}
+
+          # Create and push the tag to serverA
+          git tag $TAG_NAME
+          git push origin $TAG_NAME
+
+
 
 
   deploy:
