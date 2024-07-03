@@ -34,7 +34,7 @@ jobs:
         run: |
           TAG_NAME=${{ env.tag }}
           REPO_A_OWNER=${{ github.repository_owner }} # Automatically gets the repo owner
-          REPO_NAME=serverA
+          REPO_A_NAME=serverA
 
           # Clone serverA
           git clone https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO_A_OWNER}/${REPO_A_NAME}.git
