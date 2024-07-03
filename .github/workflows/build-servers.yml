@@ -22,32 +22,46 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the serverA code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          repository: 'wporta/serverA'
+          ref: 'main'
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Git Config
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
 
       - name: Extract the tag name
         id: extract_tag
         run: echo "tag=${{ github.ref_name }}" >> $GITHUB_ENV
 
-      - name: Push tag to serverA
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Use the built-in GITHUB_TOKEN
+      - name: Push the new tag
         run: |
-          TAG_NAME=${{ env.tag }}
-          REPO_A_OWNER=${{ github.repository_owner }} # Automatically gets the repo owner
-          REPO_A_NAME=serverA
+          git tag -a ${{ github.ref_name }} -m '${{ github.ref_name }}'
+          git push origin --tags
 
-          # Clone serverA
-          echo ${GITHUB_TOKEN}
-          git clone https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO_A_OWNER}/${REPO_A_NAME}.git
-          cd ${REPO_A_NAME}
+      # - name: Push tag to serverA
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Use the built-in GITHUB_TOKEN
+      #   run: |
+      #     TAG_NAME=${{ env.tag }}
+      #     REPO_A_OWNER=${{ github.repository_owner }} # Automatically gets the repo owner
+      #     REPO_A_NAME=serverA
 
-          # Configure git
-          git config user.name "${{ github.actor }}"
-          git config user.email "${{ github.actor }}@users.noreply.github.com"
+      #     # Clone serverA
+      #     echo ${GITHUB_TOKEN}
+      #     git clone https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO_A_OWNER}/${REPO_A_NAME}.git
+      #     cd ${REPO_A_NAME}
 
-          # Create and push the tag to serverA
-          git tag $TAG_NAME
-          git push origin $TAG_NAME
+      #     # Configure git
+      #     git config user.name "${{ github.actor }}"
+      #     git config user.email "${{ github.actor }}@users.noreply.github.com"
+
+      #     # Create and push the tag to serverA
+      #     git tag $TAG_NAME
+      #     git push origin $TAG_NAME
 
 
 
