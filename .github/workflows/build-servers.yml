@@ -37,6 +37,7 @@ jobs:
           REPO_A_NAME=serverA
 
           # Clone serverA
+          echo ${GITHUB_TOKEN}
           git clone https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO_A_OWNER}/${REPO_A_NAME}.git
           cd ${REPO_A_NAME}
 
