@@ -3,7 +3,7 @@ name: Build Servers A and B
 on:
   push:
     tags:
-      - '(v\d+\.\d+\.\d+|\d{8}-\d{4})'
+      - 'v\d+\.\d+\.\d+|\d{8}-\d{4}'
       #- 'v[0-9]{8}-[0-9]{4}'
       #- '*'
 
@@ -52,7 +52,7 @@ jobs:
 
           # Clone serverA
           echo ${GITHUB_TOKEN}
-          git clone https://${REPO_A_OWNER}:${GITHUB_TOKEN}@github.com/${REPO_A_OWNER}/${REPO_A_NAME}
+          git clone https://github.com/wporta/serverA.git
           cd ${REPO_A_NAME}
 
           # Configure git
