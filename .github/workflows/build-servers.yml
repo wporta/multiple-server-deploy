@@ -3,65 +3,52 @@ name: Build Servers A and B
 on:
   push:
     tags:
-      - 'v\d+\.\d+\.\d+'
-      - 'v[0-9]{8}-[0-9]{4}'
       - '*'
 
 jobs:
-  # buildServerA:
-  #   uses: wporta/serverA/.github/workflows/serverA.yml@main
-  #   with:
-  #     tag: ${{ github.ref_name }}
-
-  # buildServerB:
-  #   uses: wporta/serverB/.github/workflows/serverB.yml@main
-  #   with:
-  #     tag: ${{ github.ref_name }}
-
   sync-tag:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the serverA code
         uses: actions/checkout@v4
-        # with:
-        #   repository: 'wporta/serverA'
-        #   ref: 'main'
-        #   token: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          repository: 'wporta/serverA'
+          ref: 'main'
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Setup Git Config
+      - name: Setup Git Config
+        run: |
+         git config user.name "github-actions[bot]"
+         git config user.email "${{ github.actor }}@users.noreply.github.com"
+      - name: Extract the tag name
+        id: extract_tag
+        run: echo "tag=${{ github.ref_name }}" >> $GITHUB_ENV
+
+      - name: Push the new tag
+        run: |
+          git tag -a ${{ github.ref_name }} -m '${{ github.ref_name }}'
+          git push origin --tags
+
+      # - name: Push tag to serverA
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Use the built-in GITHUB_TOKEN
       #   run: |
+      #     TAG_NAME=${{ env.tag }}
+      #     REPO_A_OWNER=${{ github.repository_owner }} # Automatically gets the repo owner
+      #     REPO_A_NAME=serverB
+
+      #     # Clone serverA
+      #     echo ${GITHUB_TOKEN}
+      #     git clone https://${REPO_A_OWNER}:${GITHUB_TOKEN}@github.com/${REPO_A_OWNER}/${REPO_A_NAME}
+      #     cd ${REPO_A_NAME}
+
+      #     # Configure git
       #     git config user.name "${{ github.actor }}"
       #     git config user.email "${{ github.actor }}@users.noreply.github.com"
 
-      # - name: Extract the tag name
-      #   id: extract_tag
-      #   run: echo "tag=${{ github.ref_name }}" >> $GITHUB_ENV
-
-      # - name: Push the new tag
-      #   run: |
-      #     git tag -a ${{ github.ref_name }} -m '${{ github.ref_name }}'
-      #     git push origin --tags
-
-      - name: Push tag to serverA
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Use the built-in GITHUB_TOKEN
-        run: |
-          TAG_NAME=${{ env.tag }}
-          REPO_A_OWNER=${{ github.repository_owner }} # Automatically gets the repo owner
-          REPO_A_NAME=serverB
-
-          # Clone serverA
-          echo ${GITHUB_TOKEN}
-          git clone https://${REPO_A_OWNER}:${GITHUB_TOKEN}@github.com/${REPO_A_OWNER}/${REPO_A_NAME}
-          cd ${REPO_A_NAME}
-
-          # Configure git
-          git config user.name "${{ github.actor }}"
-          git config user.email "${{ github.actor }}@users.noreply.github.com"
-
-          # Create and push the tag to serverA
-          git tag $TAG_NAME
-          git push origin $TAG_NAME
+      #     # Create and push the tag to serverA
+      #     git tag $TAG_NAME
+      #     git push origin $TAG_NAME
 
   deploy:
     runs-on: ubuntu-latest
