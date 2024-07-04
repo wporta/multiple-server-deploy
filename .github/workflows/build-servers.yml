@@ -9,23 +9,20 @@ jobs:
   sync-tag:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout the serverA code
+      - name: Checkout the serverA code and push tag
         uses: actions/checkout@v4
         with:
           repository: 'wporta/serverA'
           ref: 'main'
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ github.token }}
+          run: |
+            git config user.name "${{ github.actor }}"
+            git config user.email "${{ github.actor }}@users.noreply.github.com"
+            git tag -a ${{ github.ref_name }} -m '${{ github.ref_name }}'
+            git push origin --tags
 
-      - name: Install git-push action
-        uses: actions/setup-action@v3
 
-      - name: Push tag
-        uses: marcelsturm/git-push-action@v1.1.1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}  # PAT with push access
-          remote: ${{ github.actor }}  # Remote name for the target repository (configured in your local Git)
-          branch: main  # Push the same branch that triggered the workflow
-          tag: ${{ github.ref_name }}  # Push the same tag that triggered the workflow
+      
 
       # - name: Setup Git Config
       #   run: |
