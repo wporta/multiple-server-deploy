@@ -16,18 +16,29 @@ jobs:
           ref: 'main'
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Git Config
-        run: |
-         git config user.name "github-actions[bot]"
-         git config user.email "${{ github.actor }}@users.noreply.github.com"
-      - name: Extract the tag name
-        id: extract_tag
-        run: echo "tag=${{ github.ref_name }}" >> $GITHUB_ENV
+      - name: Install git-push action
+        uses: actions/setup-action@v3
 
-      - name: Push the new tag
-        run: |
-          git tag -a ${{ github.ref_name }} -m '${{ github.ref_name }}'
-          git push origin --tags
+      - name: Push tag
+        uses: marcelsturm/git-push-action@v1.1.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # PAT with push access
+          remote: ${{ github.actor }}  # Remote name for the target repository (configured in your local Git)
+          branch: main  # Push the same branch that triggered the workflow
+          tag: ${{ github.ref_name }}  # Push the same tag that triggered the workflow
+
+      # - name: Setup Git Config
+      #   run: |
+      #    git config user.name "github-actions[bot]"
+      #    git config user.email "${{ github.actor }}@users.noreply.github.com"
+      # - name: Extract the tag name
+      #   id: extract_tag
+      #   run: echo "tag=${{ github.ref_name }}" >> $GITHUB_ENV
+
+      # - name: Push the new tag
+      #   run: |
+      #     git tag -a ${{ github.ref_name }} -m '${{ github.ref_name }}'
+      #     git push origin --tags
 
       # - name: Push tag to serverA
       #   env:
