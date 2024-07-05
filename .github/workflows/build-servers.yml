@@ -9,7 +9,8 @@ on:
     # Run at 08:00 AM MDT every Monday
     # Adjusting for UTC, which is typically 6 hours ahead of MDT
     #- cron: '0 14 * * 1'  # 14:00 UTC is 8:00 AM MDT during Daylight Saving Time
-    - cron: '43 4 * * 5'
+
+    - cron: '48 22 * * 5'  # 4:46 AM UTC on Tuesday, which is 10:46 PM CST on Monday
 
 jobs:
   get-timestamp:
