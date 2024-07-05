@@ -18,10 +18,10 @@ jobs:
   sync_tag:
     runs-on: ubuntu-latest
     outputs:
-      tag_name: ${{ steps.timestamp.outputs.TAG_NAME }}
+      tag_name: ${{ steps.settag.outputs.TAG_NAME }}
     steps:
       - name: Create git tag from Timestamp
-        id: timestamp
+        id: settag
         run: |
           tag=$(date -u +"v%Y%m%d.%H%M")
           echo $tag
