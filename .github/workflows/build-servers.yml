@@ -18,7 +18,7 @@ jobs:
   sync_tag:
     runs-on: ubuntu-latest
     outputs:
-      tag_name: "${{ steps.settag.outputs.TAG_NAME }}"
+      sharedVal: ${{ steps.setvar.outputs.sharedVal }}
     steps:
       - name: Create git tag from Timestamp
         id: settag
@@ -26,6 +26,10 @@ jobs:
           tag=$(date -u +"v%Y%m%d.%H%M")
           echo $tag
           echo "TAG_NAME=$tag" >> $GITHUB_ENV
+
+      - name: Set Shared Value
+        id: setvar
+        run: echo "sharedVal=$TAG_NAME" >> $GITHUB_ENV
 
       - name: Checkout the code
         uses: actions/checkout@v4
@@ -82,4 +86,4 @@ jobs:
     steps:
       - name: Deploy
         run: |
-          echo "Deploy Apps with tag: ${{ needs.sync_tag.outputs.tag_name }}"
+          echo "Deploy Apps with tag: ${{ needs.sync_tag.outputs.sharedVal }}"
