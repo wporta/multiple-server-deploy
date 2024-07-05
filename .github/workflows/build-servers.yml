@@ -17,8 +17,8 @@ jobs:
 
   sync_tag:
     runs-on: ubuntu-latest
-    outputs:
-      sharedVal: ${{ steps.setvar.outputs.sharedVal }}
+    # outputs:
+    #   sharedVal: ${{ env.TAG_NAME }}
     steps:
       - name: Create git tag from Timestamp
         id: settag
@@ -27,10 +27,10 @@ jobs:
           echo $tag
           echo "TAG_NAME=$tag" >> $GITHUB_ENV
 
-      - name: Set Shared Value
-        id: setvar
-        run: |
-          sharedVal=$(cat $GITHUB_ENV | grep 'TAG_NAME' | cut - " know
+      # - name: Set Shared Value
+      #   id: setvar
+      #   run: |
+      #     sharedVal=$(cat $GITHUB_ENV | grep 'TAG_NAME' | cut - " know
 
       - name: Checkout the code
         uses: actions/checkout@v4
@@ -45,6 +45,9 @@ jobs:
           cd serverA
           git tag $TAG_NAME
           git push https://wporta:${REPOA_PAT}@github.com/wporta/serverA.git --tags
+
+    outputs:
+      sharedVal: ${{ env.TAG_NAME }}
         
 
           # - name: Setup Git Config
