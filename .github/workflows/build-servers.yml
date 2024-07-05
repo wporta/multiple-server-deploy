@@ -18,14 +18,14 @@ jobs:
   sync_tag:
     runs-on: ubuntu-latest
     outputs:
-      tag_name: $TAG_NAME
+      tag_name: ${{ steps.timestamp.outputs.TAG_NAME }}
     steps:
       - name: Create git tag from Timestamp
         id: timestamp
         run: |
-          TAG_NAME=$(date -u +"v%Y%m%d.%H%M")
-          echo $TAG_NAME
-          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+          tag=$(date -u +"v%Y%m%d.%H%M")
+          echo $tag
+          echo "TAG_NAME=$tag" >> $GITHUB_ENV
 
       - name: Checkout the code
         uses: actions/checkout@v4
