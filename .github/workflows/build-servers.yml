@@ -18,7 +18,7 @@ jobs:
   sync_tag:
     runs-on: ubuntu-latest
     outputs:
-      tag_name: ${{ steps.timestamp.outputs.TAG_NAME }}
+      tag_name: "Axl Rose"
     steps:
       - name: Create git tag from Timestamp
         id: timestamp
