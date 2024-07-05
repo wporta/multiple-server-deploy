@@ -29,7 +29,8 @@ jobs:
 
       - name: Set Shared Value
         id: setvar
-        run: echo "sharedVal=$TAG_NAME" >> $GITHUB_ENV
+        run: |
+          echo "sharedVal=${{ env.TAG_NAME }}" >> $GITHUB_ENV
 
       - name: Checkout the code
         uses: actions/checkout@v4
