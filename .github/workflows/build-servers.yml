@@ -14,19 +14,17 @@ on:
   #  - cron: '4 5 * * 5'  # 4:46 AM UTC on Tuesday, which is 10:46 PM CST on Monday
 
 jobs:
-  get-timestamp:
+
+  sync-tag:
     runs-on: ubuntu-latest
     steps:
-      - name: Get current Timestamp
+      - name: Create git tag from Timestamp
         id: datetime
         run: |
           TAG_NAME=$(date -u +"v%Y%m%d.%H%M")
           echo $TAG_NAME
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
 
-  sync-tag:
-    runs-on: ubuntu-latest
-    steps:
       - name: Checkout the code
         uses: actions/checkout@v4
 
