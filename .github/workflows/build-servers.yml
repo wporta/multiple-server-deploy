@@ -18,7 +18,7 @@ jobs:
   sync_tag:
     runs-on: ubuntu-latest
     outputs:
-      tag_name: "Axl Rose"
+      tag_name: $TAG_NAME
     steps:
       - name: Create git tag from Timestamp
         id: timestamp
