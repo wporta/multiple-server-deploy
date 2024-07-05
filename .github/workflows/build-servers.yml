@@ -17,9 +17,11 @@ jobs:
 
   sync-tag:
     runs-on: ubuntu-latest
+    outputs:
+      tag_name: ${{ steps.timestamp.outputs.TAG_NAME }}
     steps:
       - name: Create git tag from Timestamp
-        id: datetime
+        id: timestamp
         run: |
           TAG_NAME=$(date -u +"v%Y%m%d.%H%M")
           echo $TAG_NAME
@@ -81,4 +83,4 @@ jobs:
     steps:
       - name: Deploy
         run: |
-          echo "Deploy Apps with tag: " $TAG_NAME
+          echo "Deploy Apps with tag: ${{ needs.sync-tag.outputs.tag_name}}"
