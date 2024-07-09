@@ -15,12 +15,15 @@ jobs:
           echo $tag
           echo "TAG_NAME=$tag" >> $GITHUB_ENV
 
+    outputs:
+      sharedVal: ${{ env.TAG_NAME }}
+
   build-server-A:
     name: Build Server A
     needs: create_tag
     uses: wporta/serverA/.github/workflows/build.yml@main
     with:
-      tag: ${{ env.TAG_NAME }}
+      tag: ${{ needs.create_tag.outputs.sharedVal }}
 
   deploy:
     runs-on: ubuntu-latest
