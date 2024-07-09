@@ -1,0 +1,31 @@
+name: Building with Reusable Workflows
+
+on:
+  workflow_dispatch: 
+
+jobs:
+  create_tag:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create git tag from Timestamp
+        id: settag
+        run: |
+          tag=$(date -u +"v%Y%m%d.%H%M")
+          echo $tag
+          echo "TAG_NAME=$tag" >> $GITHUB_ENV
+
+  build-server-A:
+    name: Build Server A
+    uses: wporta/serverA/.github/workflows/build.yml@main
+    with:
+      tag: ${{ env.TAG_NAME }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploying
+        run: |
+          echo "Deploying"
+          sleep 1m
+          echo "Done Deploying"
