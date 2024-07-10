@@ -8,12 +8,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # - name: Set repo-pat
-      #   env:
-      #     REPOA_PAT: ${{ secrets.REPOA_PAT }}
-      #   run: |
-      #     echo "REPOA_PAT=$REPOA_PAT" >> $GITHUB_ENV
-
       - name: Debug PAT
         run: echo "${{ secrets.REPOA_PAT }}" | wc -c
 
@@ -26,7 +20,6 @@ jobs:
 
     outputs:
       sharedVal: ${{ env.TAG_NAME }}
-      #repo-pat: ${{ env.REPOA_PAT }}
 
   build-server-A:
     name: Build Server A
@@ -34,7 +27,8 @@ jobs:
     uses: wporta/serverA/.github/workflows/build.yml@main
     with:
       tag: ${{ needs.create_tag.outputs.sharedVal }}
-      #repo_pat: ${{ needs.create_tag.outputs.repo-pat }}
+    secrets:
+      REPOA_PAT: ${{ secrets.REPOA_PAT }}
 
   deploy:
     runs-on: ubuntu-latest
