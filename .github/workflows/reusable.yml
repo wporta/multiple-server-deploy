@@ -8,11 +8,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set repo-pat
-        env:
-          REPOA_PAT: ${{ secrets.REPOA_PAT }}
-        run: |
-          echo "REPOA_PAT=$REPOA_PAT" >> $GITHUB_ENV
+      # - name: Set repo-pat
+      #   env:
+      #     REPOA_PAT: ${{ secrets.REPOA_PAT }}
+      #   run: |
+      #     echo "REPOA_PAT=$REPOA_PAT" >> $GITHUB_ENV
 
       - name: Create git tag from Timestamp
         id: settag
@@ -23,16 +23,15 @@ jobs:
 
     outputs:
       sharedVal: ${{ env.TAG_NAME }}
-      repo-pat: ${{ env.REPOA_PAT }}
+      #repo-pat: ${{ env.REPOA_PAT }}
 
   build-server-A:
     name: Build Server A
     needs: create_tag
     uses: wporta/serverA/.github/workflows/build.yml@main
-    
     with:
       tag: ${{ needs.create_tag.outputs.sharedVal }}
-      repo_pat: ${{ needs.create_tag.outputs.repo-pat }}
+      #repo_pat: ${{ needs.create_tag.outputs.repo-pat }}
 
   deploy:
     runs-on: ubuntu-latest
