@@ -22,9 +22,11 @@ jobs:
     name: Build Server A
     needs: create_tag
     uses: wporta/serverA/.github/workflows/build.yml@main
+    env:
+          REPOA_PAT: ${{ secrets.REPOA_PAT }}
     with:
       tag: ${{ needs.create_tag.outputs.sharedVal }}
-      repo_pat: ${{ secrets.REPOA_PAT }}
+      repo_pat: ${{ env.REPOA_PAT }}
 
   deploy:
     runs-on: ubuntu-latest
